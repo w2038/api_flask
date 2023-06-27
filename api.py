@@ -30,10 +30,17 @@ def atualizar_livro(livro_id):
     livro_atualizar = request.get_json()
     for livro in livros:
         if livro['id'] == livro_id:
-            livros.append(livro_atualizar)
-    return ({'mensagem':'livro atualizado com sucesso'})
-            
-    
+            livro.update(livro_atualizar)
+            return jsonify({'mensagem':'livro atualizado com sucesso'})
+    return jsonify({"mensagem": "livro não encontrado"})
+
+@app.route("/livros/<int:livro_id>", methods=['DELETE'])
+def deletar_livro(livro_id):
+    for livro in livros:
+        if livro['id'] == livro_id:
+            livros.remove(livro)
+            return jsonify({'mensagem':'livro deletado com sucesso!'})
+    return jsonify({'mensagem': 'Livro não encontrado'})
 
 if __name__ == "__main__":
     app.run(debug=True)
